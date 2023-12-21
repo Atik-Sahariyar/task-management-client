@@ -1,14 +1,20 @@
 import { Link, NavLink } from 'react-router-dom';
 import { FaBell} from "react-icons/fa";
+import useAuth from '../../Hooks/useAuth';
 
 const Navbar = () => {
-  
+   const { user } = useAuth();
   const totalAnnouncements = null
+
   const navLinks = <>
       <NavLink to = "/" >Home</NavLink>
-      <NavLink to = "/dashboard" >Dashboard</NavLink>
       <NavLink to = "/about" >About</NavLink>
       <NavLink to = "/services" >Services</NavLink>
+      {
+        user ?  <NavLink to = "/dashboard" >Dashboard</NavLink>
+         : <NavLink to = "/signup">Sign Up</NavLink>
+
+      }
   </>
   return (
     <div className="navbar  max-w-screen-xl mx-auto bg-blue-300">
