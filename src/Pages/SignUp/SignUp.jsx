@@ -4,6 +4,7 @@ import axios from "axios";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
+import SocialLogin from "../../Components/SocialLogin/SocialLogin";
 
 // image hosting
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
@@ -47,8 +48,8 @@ const SignupPage = () => {
                 profilePic: photoURL,
                 password
             }
-            console.log('user info: ', userInfo);
-            axiosPublic.post('/users', userInfo)
+        
+            axiosPublic.post('/api/users', userInfo)
                 .then(res => {
                     console.log(res.data);
                     if (res.data?._id) {
@@ -152,6 +153,9 @@ const SignupPage = () => {
             </button>
           </div>
         </form>
+        <div>
+            <SocialLogin></SocialLogin>
+        </div>
         <hr className="my-6 border-t" />
         {/* Social signup buttons */}
         {/* ... */}
