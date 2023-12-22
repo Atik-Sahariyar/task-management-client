@@ -1,8 +1,9 @@
 import { useForm } from "react-hook-form";
 import useAuth from "../../../Hooks/useAuth";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
-import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const TaskCreationPage = () => {
   const { user } = useAuth();
@@ -37,7 +38,10 @@ const TaskCreationPage = () => {
 
     const res = await axiosPublic.post("/api/tasks", taskData);
     if (res.data?._id) {
-        Swal.fire('Task created successfull')
+      toast.success('New task created successfully!', {
+        position: toast.POSITION.TOP_RIGHT,
+        autoClose: 3000, 
+      });
         navigate('/dashboard/allTasks');
         reset();
     }

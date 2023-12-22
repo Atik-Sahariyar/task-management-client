@@ -2,8 +2,9 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import useAuth from "../../../Hooks/useAuth";
-import Swal from "sweetalert2";
 import { useQuery } from "@tanstack/react-query";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UpdateTask = () => {
     const { id } = useParams();
@@ -57,7 +58,10 @@ const UpdateTask = () => {
     
       const res = await axiosPublic.patch(`/api/tasks/update/${_id}`, taskData);
       if (res.data) {
-          Swal.fire('Task updated successfull')
+        toast.success('Task updated successfully!', {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 2000, 
+        });
           navigate('/dashboard/allTasks');
           reset();
       }

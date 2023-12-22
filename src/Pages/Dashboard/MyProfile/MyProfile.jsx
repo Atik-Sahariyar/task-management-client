@@ -1,13 +1,15 @@
 
+import { useNavigate } from 'react-router-dom';
 import useAuth from '../../../Hooks/useAuth';
 
 const MyProfile = () => {
   const { user, loading, logOut } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logOut()
       .then(() => {
-        // Perform any additional actions after logout if needed
+        navigate('/')
       })
       .catch((error) => {
         console.error('Logout error:', error);
@@ -21,7 +23,7 @@ const MyProfile = () => {
       ) : user ? (
         <div className="flex items-center space-x-4">
           <img
-            src={user.photoURL || 'default-avatar-url'} // Provide a default avatar URL
+            src={user.photoURL || 'default-avatar-url'} 
             alt="Profile"
             className="w-12 h-12 rounded-full"
           />
