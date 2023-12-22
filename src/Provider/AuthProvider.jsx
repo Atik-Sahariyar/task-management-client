@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import {
+    GithubAuthProvider,
     GoogleAuthProvider,
     createUserWithEmailAndPassword,
     getAuth, 
@@ -12,6 +13,7 @@ import {
 import app from "../firebase/firebase.config";
 
 
+
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
 
@@ -19,6 +21,7 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true)
     const googleProvider = new GoogleAuthProvider();
+    const githubProvider = new GithubAuthProvider();
 
     // create user with email and password
     const createUser = (email, password) => {
@@ -29,19 +32,43 @@ const AuthProvider = ({ children }) => {
     // create user with google
     const googleSignIn = async () => {
         setLoading(true);
-        console.log('google auth: ', auth);
         const result = await signInWithPopup(auth, googleProvider);
         return result;
     }
+ 
+    // create user with github
+    const gitHubSignin = async () => {
+        try {
+          setLoading(true);
+          console.log('github auth: ', auth);
+          console.log(githubProvider);
+          const result = await signInWithPopup(auth, githubProvider);
+        
+          return result;
+        } catch (error) {
+          console.error('GitHub signin error:', error);
+          throw error; 
+        } finally {
+          setLoading(false); 
+        }
+      };
 
     // update user profile
+
     const updateUserProfiole = (name, photo) => {
         return updateProfile(auth.currentUser, {
-            displayName: name,
-            photoURL: photo
+          displayName: name,
+          photoURL: photo,
         })
-    }
-
+          .then(() => {
+            console.log('Profile updated successfully');
+          })
+          .catch((error) => {
+            console.error('Error updating profile:', error);
+            throw error;
+          });
+      };
+      
     // sign in user
     const signIn = (email, password) => {
         setLoading(true);
@@ -56,18 +83,15 @@ const AuthProvider = ({ children }) => {
 
     // current user
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, currentUser => {
-            setUser(currentUser);
-            if (currentUser) {
-                setLoading(false);
-            
-            } 
-            console.log('current user --> : ', currentUser);
-        })
-        return () => {
-            unsubscribe();
-        }
-    }, []);
+        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+          setUser(currentUser);
+          if (currentUser) {
+            setLoading(false);
+          }
+          console.log('Current user:', currentUser ? currentUser.uid : 'Not logged in');
+        });
+        return unsubscribe;
+      }, []);
 
 
     // auth information
@@ -78,7 +102,8 @@ const AuthProvider = ({ children }) => {
         signIn,
         logOut,
         updateUserProfiole,
-        googleSignIn
+        googleSignIn,
+        gitHubSignin
     }
 
     return (

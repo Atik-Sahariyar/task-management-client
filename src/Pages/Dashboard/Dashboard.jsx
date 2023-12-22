@@ -1,10 +1,14 @@
 import {  FaBook, FaHome, FaTasks, FaUpload, FaUser } from "react-icons/fa";
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 
 import { Helmet } from "react-helmet-async";
 
 const Dashboard = () => {
+  const location = useLocation();
 
+  const isLinkActive = (link) => {
+    return location.pathname === link ? "bg-blue-500 text-white rounded px-2" : "";
+  };
     return (
     <div>
       <Helmet>
@@ -15,17 +19,16 @@ const Dashboard = () => {
           <ul className=" p-2 flex flex-row justify-center md:flex-col gap-6 md:gap-1 ">
             {/* user routes */}
             <li>
-              <NavLink to="/dashboard/myProfile">
+              <NavLink to="/dashboard/myProfile" className={isLinkActive("/dashboard/myProfile")}>
                 
                 <span className=" flex gap-2 my-3 items-center hover:bg-blue-600 hover:text-white">
                   <FaUser></FaUser>
                   <span className=" hidden md:block">My Profile</span>
-                  <span className=" hidden hover:text-white">My Profile</span>
-                </span>
+               </span>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/dashboard/allTasks">
+              <NavLink to="/dashboard/allTasks" className={isLinkActive("/dashboard/allTasks")}>
                 
                 <span className=" flex gap-2 my-3 items-center hover:bg-blue-600 hover:text-white">
                   <FaTasks></FaTasks>
@@ -34,22 +37,20 @@ const Dashboard = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/dashboard/taskCreate">
+              <NavLink to="/dashboard/taskCreate" className={isLinkActive("/dashboard/taskCreate")}>
                 
                 <span className=" flex gap-2 my-3 items-center hover:bg-blue-600 hover:text-white">
                   <FaUpload></FaUpload>
                   <span className=" hidden md:block">Create a task</span>
-                  <span className=" hidden hover:text-white ">Create a task</span>
                 </span>
               </NavLink>
             </li>
             <li>
-              <NavLink to="/dashboard/myTasks">
+              <NavLink to="/dashboard/myTasks" className={isLinkActive("/dashboard/myTasks")}>
                 
                 <span className=" flex gap-2 my-3 items-center hover:bg-blue-600 hover:text-white">
                   <FaBook></FaBook>
                   <span className=" hidden md:block">My Tasks</span>
-                  <span className=" hidden hover:block  hover:text-white">My Tasks</span>
                 </span>
               </NavLink>
             </li>

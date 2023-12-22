@@ -1,10 +1,16 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { FaBell } from "react-icons/fa";
 import useAuth from "../../Hooks/useAuth";
 
 const Navbar = () => {
   const { user, logOut } = useAuth();
   const notifications = null;
+  const location = useLocation();
+
+  // Function to determine if the link is active
+  const isLinkActive = (link) => {
+    return location.pathname === link ? "bg-blue-500 text-white rounded px-2" : "";
+  };
 
   // user logout function
   const handleLogout = () => {
@@ -18,15 +24,15 @@ const Navbar = () => {
   // clickable links
   const navLinks = (
     <>
-      <NavLink to="/">Home</NavLink>
-      <NavLink to="/about">About</NavLink>
-      <NavLink to="/services">Services</NavLink>
+      <NavLink to="/" className={isLinkActive("/")}>Home</NavLink>
+      <NavLink to="/about" className={isLinkActive("/about")}>About</NavLink>
+      <NavLink to="/services" className={isLinkActive("/services")} >Services</NavLink>
       {user ? (
         <>
-          <NavLink to="/dashboard">Dashboard</NavLink>
+          <NavLink to="/dashboard" className={isLinkActive("/dashboard")}>Dashboard</NavLink>
         </>
       ) : (
-        <NavLink to="/login">Login</NavLink>
+        <NavLink to="/login" className={isLinkActive("/login")}>Login</NavLink>
       )}
     </>
   );
@@ -70,7 +76,7 @@ const Navbar = () => {
         </div>
       </div>
       <div className="navbar-center hidden md:flex">
-        <ul className="menu flex gap-2 menu-horizontal px-1">{navLinks}</ul>
+        <ul className="menu flex gap-4 text-xl menu-horizontal px-1">{navLinks}</ul>
       </div>
       <div className="navbar-end">
         <div className="flex gap-3 items-center">
@@ -114,6 +120,9 @@ const Navbar = () => {
                 <li>
                   <p>{user?.displayName}</p>
                 </li>  
+                <li>
+                <Link to = '/dashboard/myProfile'>View Profile</Link>
+                </li>
                 <li>
                   <button onClick={handleLogout}>Logout</button>{" "}
                 </li>

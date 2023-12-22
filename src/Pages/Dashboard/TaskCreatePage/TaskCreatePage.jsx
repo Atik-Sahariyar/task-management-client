@@ -23,7 +23,8 @@ const TaskCreationPage = () => {
     const description = data.description;
     const deadline = data.deadline;
     const priority = data.priority;
-    const status = "ToDo";
+    
+    const status = "todo";
     const taskData = {
       aouthorName,
       aouthorEemail,
